@@ -1,0 +1,42 @@
+# SearchBench Configuration
+# ============================
+
+# MCP backend configuration
+backend:
+  # "claude_code" = invoke via Claude Code MCP tools (default when running in Claude)
+  # "mock" = use simulated responses for framework testing
+  # "http" = direct HTTP calls to MCP endpoint
+  type: claude_code
+  http:
+    base_url: "http://localhost:8080"
+    timeout_sec: 30
+
+# Test execution parameters
+execution:
+  parallel_scenarios: false      # Run scenarios within a suite in parallel
+  max_concurrent: 5             # Max concurrent searches during concurrency tests
+  delay_between_queries_ms: 200 # Delay between sequential queries
+  retry_failed: 2               # Retry count for failed queries
+  timeout_per_query_sec: 30     # Per-query timeout
+
+# Thresholds for pass/fail
+thresholds:
+  min_success_rate: 0.90        # Minimum % of queries that must succeed
+  max_avg_latency_ms: 5000      # Max acceptable average latency
+  min_avg_result_count: 3       # Minimum expected results per query
+  max_error_rate: 0.05          # Maximum acceptable error rate
+  min_relevance_score: 0.60     # Minimum average relevance score (0-1)
+
+# Reporting
+reporting:
+  output_dir: results
+  formats: [json, markdown]
+  retain_history: 10            # Number of past runs to keep
+
+# Scenario files to load (relative to project root)
+scenario_files:
+  - scenarios/sci_research.yaml
+  - scenarios/code_intel.yaml
+  - scenarios/concurrency.yaml
+  - scenarios/stability.yaml
+  - scenarios/longevity.yaml
